@@ -1,6 +1,9 @@
 # 1. Base image
 FROM node:20-alpine AS base
 
+# Install OpenSSL (required for Prisma on Alpine)
+RUN apk add --no-cache openssl
+
 # 2. Dependencies
 FROM base AS deps
 WORKDIR /app

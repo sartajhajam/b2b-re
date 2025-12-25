@@ -11,7 +11,9 @@ import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 
-export default function SearchPage() {
+import { Suspense } from 'react';
+
+function SearchResultsContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const pathname = usePathname();
@@ -142,5 +144,17 @@ export default function SearchPage() {
             </main>
             <Footer />
         </div>
+    );
+}
+
+export default function SearchPage() {
+    return (
+        <Suspense fallback={
+            <div className="flex min-h-screen items-center justify-center">
+                <Loader2 className="h-10 w-10 animate-spin text-primary" />
+            </div>
+        }>
+            <SearchResultsContent />
+        </Suspense>
     );
 }

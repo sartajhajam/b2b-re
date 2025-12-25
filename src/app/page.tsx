@@ -5,8 +5,10 @@ import { Footer } from '@/components/layout/Footer';
 import { HeroSlider } from '@/components/ui/HeroSlider';
 import { CollectionCarousel } from '@/components/ui/CollectionCarousel';
 import { prisma } from '@/lib/prisma';
-import { ProductType } from '@/generated/client';
+import { ProductType } from '@prisma/client';
 import { CATEGORIES } from '@/lib/data';
+
+export const dynamic = 'force-dynamic';
 
 // Define banner images (placeholders - user to replace with Cloudinary URLs)
 const HERO_BANNERS = [

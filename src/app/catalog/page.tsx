@@ -4,7 +4,9 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { CATEGORIES } from '@/lib/data';
 import { prisma } from '@/lib/prisma';
-import { ProductType } from '@/generated/client';
+import { ProductType } from '@prisma/client';
+
+export const dynamic = 'force-dynamic';
 
 // Helper to map display category to Prisma Enum
 const getPrismaCategory = (category: string): ProductType => {

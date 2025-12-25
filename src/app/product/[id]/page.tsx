@@ -8,6 +8,8 @@ import { notFound } from 'next/navigation';
 import { Lock } from 'lucide-react';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 // Mock auth check - in real app use session/auth hook
 // For demo purposes, we'll assume a "false" state that can be toggled by the user in a real app,
 // but since I can't easily toggle it here, I will check if I can make it depend on a cookie or something?

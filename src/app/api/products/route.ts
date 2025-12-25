@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { ProductType } from '@/generated/client';
+import { ProductType } from '@prisma/client';
 
 /**
  * Generate unique product code in format: {PRODUCT_TYPE}-{COUNTER}

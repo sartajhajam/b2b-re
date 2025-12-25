@@ -7,7 +7,7 @@ import { Footer } from '@/components/layout/Footer';
 import { ProductCard } from '@/components/product/ProductCard';
 import { ProductFilter } from '@/components/product/ProductFilter';
 import { Pagination } from '@/components/ui/Pagination';
-import { Product } from '@/generated/client';
+import { Product } from '@prisma/client';
 import { notFound } from 'next/navigation';
 import { Loader2, Filter as FilterIcon } from 'lucide-react';
 

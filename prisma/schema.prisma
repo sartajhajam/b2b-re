@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  BUYER
+  ADMIN
+}
+
+enum ProductType {
+  SHAWL
+  STOLE
+  MUFFLER
+  RUMALA
+  DRESS
+  KIMONO
+  CAPE
+  KAFTAN
+  SCARF
+}
+
+enum OrderStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id            String   @id @default(uuid())
+  name          String
+  email         String   @unique
+  password_hash String
+  role          Role     @default(BUYER)
+  company_name  String
+  country       String
+  created_at    DateTime @default(now())
+  
+  orders        Order[]
+}
+
+model Product {
+  id           String      @id @default(uuid())
+  product_code String      @unique
+  name         String
+  product_type ProductType
+  materials    String[]
+  description  String
+  price        Decimal     // NEW: Product price
+  images       String[]
+  moq          Int         @default(30)
+  
+  // New Specifications
+  sub_category String?     // NEW: Sub-category for filtering
+  width        Float?
+  length       Float?
+  wash_care    String[]
+  
+  created_at   DateTime    @default(now())
+  
+  order_items  OrderItem[]
+}
+
+model Order {
+  id              String      @id @default(uuid())
+  buyer_id        String
+  buyer           User        @relation(fields: [buyer_id], references: [id])
+  
+  status          OrderStatus @default(PENDING)
+  
+  // Admin set fields (nullable initially)
+  total_cost      Decimal?
+  payment_terms   String?
+  payment_mode    String?
+  delivery_mode   String?
+  delivery_timeline String?
+  admin_notes     String?
+  admin_contact_email String?
+  admin_contact_phone String?
+
+  order_number    String?     @unique // Friendly Order ID (e.g. "JOHN-8392")
+  
+  created_at      DateTime    @default(now())
+
+  items           OrderItem[]
+}
+
+model OrderItem {
+  id              String      @id @default(uuid())
+  order_id        String
+  order           Order       @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  
+  product_id      String
+  product         Product     @relation(fields: [product_id], references: [id])
+  
+  quantity        Int
+}

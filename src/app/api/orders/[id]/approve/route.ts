@@ -11,7 +11,11 @@ const ApproveSchema = z.object({
     admin_notes: z.string().optional(),
 });
 
-export async function POST(request: Request, { params }: { params: { id: string } }) {
+export async function POST(
+    request: Request,
+    props: { params: Promise<{ id: string }> }
+) {
+    const params = await props.params;
     try {
         const userId = request.headers.get('x-user-id');
         const user = await prisma.user.findUnique({ where: { id: userId || '' } });

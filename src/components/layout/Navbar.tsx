@@ -11,7 +11,17 @@ import { SearchBar } from '@/components/ui/SearchBar';
 
 export const Navbar = () => {
     const cartItemsCount = useCartStore((state) => state.totalItems());
+    const [mounted, setMounted] = useState(false);
+    const { user, logout } = useAuth();
+    const pathname = usePathname();
+    const isAdminPath = pathname?.startsWith('/admin') || pathname?.startsWith('/dashboard/admin');
+
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    // Prevent hydration mismatch
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     // Close mobile menu when route changes
     useEffect(() => {

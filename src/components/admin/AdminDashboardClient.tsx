@@ -23,6 +23,23 @@ interface AdminDashboardClientProps {
 }
 
 export function AdminDashboardClient({ stats }: AdminDashboardClientProps) {
+    const { user, isLoading } = useAuth();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!isLoading) {
+            console.log('Admin Dashboard Auth Check:', { user });
+            if (!user) {
+                console.log('No user, redirecting to login...');
+                router.push('/admin/login');
+            } else if (user.role !== 'ADMIN') {
+                console.log('User is not admin, redirecting...');
+                router.push('/');
+            }
+        }
+    }, [user, isLoading, router]);
+
+
     const [showProductForm, setShowProductForm] = useState(false);
     const [showProductManagement, setShowProductManagement] = useState(false);
     const [editingProduct, setEditingProduct] = useState<any>(null);

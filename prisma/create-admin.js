@@ -1,4 +1,4 @@
-```javascript
+
 const { PrismaClient } = require('@prisma/client');
 // const bcrypt = require('bcryptjs'); // Not needed, using pre-computed hash
 
@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 async function main() {
     const email = 'admin@rambaexport.com';
     const name = 'Admin User';
-    
+
     // Hash for 'Exporting@#2025' generated locally
     const hashedPassword = '$2b$10$BX3J3Ko8z8pHQI81CeHFUOk.f5bGZsCBIThKm5cXCMS9aiG4N0j92';
 
@@ -24,10 +24,10 @@ async function main() {
         },
     });
 
-  console.log('Admin user created successfully!');
-  console.log('Email: ' + email);
-  console.log('Password: Exporting@#2025');
-  console.log('Role: ' + user.role);
+    console.log('Admin user created successfully!');
+    console.log('Email: ' + email);
+    console.log('Password: Exporting@#2025');
+    console.log('Role: ' + user.role);
 }
 
 main()

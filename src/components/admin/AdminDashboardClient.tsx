@@ -39,6 +39,40 @@ export function AdminDashboardClient({ stats }: AdminDashboardClientProps) {
         }
     }, [user, isLoading, router]);
 
+    if (isLoading) {
+        return <div className="min-h-screen flex items-center justify-center">Loading Admin Portal...</div>;
+    }
+
+    if (!user || user.role !== 'ADMIN') {
+        return (
+            <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
+                <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
+                    <h1 className="text-2xl font-bold text-red-600 mb-4">Access Denied</h1>
+                    <p className="mb-4">You are not authorized to view this page.</p>
+
+                    <div className="bg-gray-100 p-4 rounded text-left text-xs font-mono mb-6 break-all">
+                        <p><strong>Debug Info:</strong></p>
+                        <p>User: {user ? JSON.stringify(user) : 'null'}</p>
+                        <p>Role: {user?.role || 'N/A'}</p>
+                    </div>
+
+                    <button
+                        onClick={() => router.push('/admin/login')}
+                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                    >
+                        Go to Login
+                    </button>
+                    <button
+                        onClick={() => window.location.reload()}
+                        className="ml-2 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                    >
+                        Retry
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
 
     const [showProductForm, setShowProductForm] = useState(false);
     const [showProductManagement, setShowProductManagement] = useState(false);

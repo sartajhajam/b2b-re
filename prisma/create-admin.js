@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 async function main() {
     const email = 'admin@rambaexport.com';
     const password = 'Exporting@#2025';
-    const name = 'admin';
+    const name = 'Admin User';
 
     const hashedPassword = await bcrypt.hash(password, 10);
 

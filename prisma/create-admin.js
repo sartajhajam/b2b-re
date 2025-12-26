@@ -24,12 +24,10 @@ async function main() {
         },
     });
 
-    console.log(`
-  ✅ Admin user created / verified!
-Email: ${ email }
-Password: Exporting @#2025
-Role: ${ user.role }
-`);
+  console.log('Admin user created successfully!');
+  console.log('Email: ' + email);
+  console.log('Password: Exporting@#2025');
+  console.log('Role: ' + user.role);
 }
 
 main()

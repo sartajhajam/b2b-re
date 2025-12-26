@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
-import { Search, ShoppingBag, Menu } from 'lucide-react'; // Removing User icon import
+import { Search, ShoppingBag, Menu, X } from 'lucide-react'; // Removing User icon import
 import { useCartStore } from '@/store/cartStore';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
@@ -11,15 +11,12 @@ import { SearchBar } from '@/components/ui/SearchBar';
 
 export const Navbar = () => {
     const cartItemsCount = useCartStore((state) => state.totalItems());
-    const [mounted, setMounted] = useState(false);
-    const { user, logout } = useAuth();
-    const pathname = usePathname();
-    const isAdminPath = pathname?.startsWith('/admin') || pathname?.startsWith('/dashboard/admin');
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-    // Prevent hydration mismatch
+    // Close mobile menu when route changes
     useEffect(() => {
-        setMounted(true);
-    }, []);
+        setIsMobileMenuOpen(false);
+    }, [pathname]);
 
     return (
         <nav className="border-b border-gray-100 bg-white/80 backdrop-blur-md sticky top-0 z-50 transition-all duration-300">
@@ -27,8 +24,12 @@ export const Navbar = () => {
                 <div className="flex h-20 items-center justify-between">
                     <div className="flex items-center">
                         {/* Mobile Menu Trigger */}
-                        <div className="md:hidden mr-4">
-                            <Menu className="h-7 w-7 text-primary cursor-pointer hover:text-accent transition-colors" />
+                        <div className="md:hidden mr-4" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                            {isMobileMenuOpen ? (
+                                <X className="h-7 w-7 text-primary cursor-pointer hover:text-accent transition-colors" />
+                            ) : (
+                                <Menu className="h-7 w-7 text-primary cursor-pointer hover:text-accent transition-colors" />
+                            )}
                         </div>
 
                         <Link href="/" className="group flex items-center gap-3">
@@ -181,6 +182,79 @@ export const Navbar = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Mobile Menu Overlay */}
+            {isMobileMenuOpen && (
+                <div className="md:hidden absolute top-20 left-0 w-full bg-white border-b border-gray-200 shadow-xl overflow-y-auto max-h-screen">
+                    <div className="px-4 pt-2 pb-6 space-y-4">
+                        <div className="mb-4">
+                            <SearchBar />
+                        </div>
+
+                        <Link href="/" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">
+                            Home
+                        </Link>
+
+                        <div className="space-y-1">
+                            <p className="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Collections</p>
+                            {[
+                                'Shawls', 'Stoles', 'Mufflers', 'Rumala',
+                                'Dresses', 'Kimonos', 'Capes', 'Kaftans', 'Scarfs'
+                            ].map((item) => (
+                                <Link
+                                    key={item}
+                                    href={`/catalog/${item.toLowerCase()}`}
+                                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-indigo-50 ml-2 border-l-2 border-transparent hover:border-primary transition-colors"
+                                >
+                                    {item}
+                                </Link>
+                            ))}
+                        </div>
+
+                        <Link href="/custom-orders" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">
+                            Custom Orders
+                        </Link>
+
+                        <div className="border-t border-gray-200 pt-4 mt-4">
+                            {user ? (
+                                <div className="space-y-3 px-3">
+                                    <div className="flex items-center space-x-3 mb-2">
+                                        <div className="h-8 w-8 rounded-full bg-primary text-accent flex items-center justify-center font-bold">
+                                            {user.name?.[0] || 'U'}
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-medium text-gray-700">{user.name}</p>
+                                            <p className="text-xs text-gray-500">{user.email}</p>
+                                        </div>
+                                    </div>
+
+                                    {user.role !== 'ADMIN' && (
+                                        <Link href="/dashboard/buyer" className="block w-full">
+                                            <Button variant="outline" className="w-full justify-center">My Orders</Button>
+                                        </Link>
+                                    )}
+                                    <Button
+                                        onClick={() => logout()}
+                                        variant="outline"
+                                        className="w-full justify-center text-red-600 hover:bg-red-50 border-red-200"
+                                    >
+                                        Sign Out
+                                    </Button>
+                                </div>
+                            ) : (
+                                <div className="space-y-3 px-3">
+                                    <Link href="/auth/login" className="block w-full">
+                                        <Button variant="ghost" className="w-full justify-center border border-gray-300">Sign In</Button>
+                                    </Link>
+                                    <Link href="/auth/signup" className="block w-full">
+                                        <Button variant="primary" className="w-full justify-center shadow-md">Sign Up</Button>
+                                    </Link>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
         </nav>
     );
 };

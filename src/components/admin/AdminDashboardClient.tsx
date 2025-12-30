@@ -26,6 +26,18 @@ export function AdminDashboardClient({ stats }: AdminDashboardClientProps) {
     const { user, isLoading, logout } = useAuth();
     const router = useRouter();
 
+    const [showProductForm, setShowProductForm] = useState(false);
+    const [showProductManagement, setShowProductManagement] = useState(false);
+    const [editingProduct, setEditingProduct] = useState<any>(null);
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+    const [showUserManagement, setShowUserManagement] = useState(false);
+    const [toast, setToast] = useState<{ message: string; type: ToastType; isVisible: boolean }>({
+        message: '',
+        type: 'success',
+        isVisible: false
+    });
+
     useEffect(() => {
         if (!isLoading) {
             console.log('Admin Dashboard Auth Check:', { user });
@@ -38,6 +50,33 @@ export function AdminDashboardClient({ stats }: AdminDashboardClientProps) {
             }
         }
     }, [user, isLoading, router]);
+
+    const showToast = (message: string, type: ToastType = 'success') => {
+        setToast({ message, type, isVisible: true });
+    };
+
+    const handleProductSuccess = () => {
+        showToast(editingProduct ? 'Product updated successfully!' : 'Product created successfully!', 'success');
+        setRefreshTrigger(prev => prev + 1);
+        setEditingProduct(null);
+        // Re-open management modal to show updated list
+        setShowProductManagement(true);
+    };
+
+    const handleCloseForm = () => {
+        setShowProductForm(false);
+        setEditingProduct(null);
+        // If editing was cancelled, return to management list
+        if (editingProduct) {
+            setShowProductManagement(true);
+        }
+    };
+
+    const handleEditProduct = (product: any) => {
+        setEditingProduct(product);
+        setShowProductManagement(false); // Close list to show form
+        setShowProductForm(true);
+    };
 
     if (isLoading) {
         return <div className="min-h-screen flex items-center justify-center">Loading Admin Portal...</div>;
@@ -72,46 +111,6 @@ export function AdminDashboardClient({ stats }: AdminDashboardClientProps) {
             </div>
         );
     }
-
-
-    const [showProductForm, setShowProductForm] = useState(false);
-    const [showProductManagement, setShowProductManagement] = useState(false);
-    const [editingProduct, setEditingProduct] = useState<any>(null);
-    const [refreshTrigger, setRefreshTrigger] = useState(0);
-
-    const [showUserManagement, setShowUserManagement] = useState(false);
-    const [toast, setToast] = useState<{ message: string; type: ToastType; isVisible: boolean }>({
-        message: '',
-        type: 'success',
-        isVisible: false
-    });
-
-    const showToast = (message: string, type: ToastType = 'success') => {
-        setToast({ message, type, isVisible: true });
-    };
-
-    const handleProductSuccess = () => {
-        showToast(editingProduct ? 'Product updated successfully!' : 'Product created successfully!', 'success');
-        setRefreshTrigger(prev => prev + 1);
-        setEditingProduct(null);
-        // Re-open management modal to show updated list
-        setShowProductManagement(true);
-    };
-
-    const handleCloseForm = () => {
-        setShowProductForm(false);
-        setEditingProduct(null);
-        // If editing was cancelled, return to management list
-        if (editingProduct) {
-            setShowProductManagement(true);
-        }
-    };
-
-    const handleEditProduct = (product: any) => {
-        setEditingProduct(product);
-        setShowProductManagement(false); // Close list to show form
-        setShowProductForm(true);
-    };
 
     return (
         <div className="flex min-h-screen flex-col">

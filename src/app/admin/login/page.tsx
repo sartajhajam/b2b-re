@@ -2,11 +2,13 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 
 export default function AdminLoginPage() {
     const router = useRouter();
+    const { refreshUser } = useAuth();
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -31,6 +33,9 @@ export default function AdminLoginPage() {
             if (!res.ok) {
                 throw new Error(data.error || 'Login failed');
             }
+
+            // Sync auth state
+            await refreshUser();
 
             // Redirect to Admin Dashboard on success
             router.push('/dashboard/admin');

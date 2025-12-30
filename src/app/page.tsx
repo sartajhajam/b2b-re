@@ -21,23 +21,11 @@ const HERO_BANNERS = [
     alt: "Merino Stoles",
   },
   {
-    src: "https://images.unsplash.com/photo-1549439602-43ebca2327af?q=80&w=2000&auto=format&fit=crop",
-    alt: "Artisan Craftsmanship",
-    title: "Heritage & Craft",
-    subtitle: "30 Years of Excellence"
+    src: "https://res.cloudinary.com/ramba-exports/image/upload/v1766930240/Gray_Minimalist_New_Collection_Banner_qusrwk.jpg",
+    alt: "Boiled Wool Stoles Collection",
+
   },
-  {
-    src: "https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?q=80&w=2000&auto=format&fit=crop",
-    alt: "New Arrivals",
-    title: "New Collection",
-    subtitle: "Discover the Latest Trends"
-  },
-  {
-    src: "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?q=80&w=2000&auto=format&fit=crop",
-    alt: "Global Exports",
-    title: "Global Reach",
-    subtitle: "Exporting to Europe & Beyond"
-  }
+
 ];
 
 // Map display names to Prisma Enums

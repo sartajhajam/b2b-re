@@ -59,7 +59,6 @@ export const Footer = () => {
                                 <li className="flex items-center text-sm text-gray-600">
                                     <Mail className="h-4 w-4 mr-2 flex-shrink-0 text-accent" />
                                     <div>
-                                        <p>trade@rambaexports.com</p>
                                         <p className="mt-1">exportsramba@gmail.com</p>
                                     </div>
                                 </li>

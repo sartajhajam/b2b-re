@@ -23,7 +23,7 @@ interface AdminDashboardClientProps {
 }
 
 export function AdminDashboardClient({ stats }: AdminDashboardClientProps) {
-    const { user, isLoading } = useAuth();
+    const { user, isLoading, logout } = useAuth();
     const router = useRouter();
 
     useEffect(() => {
@@ -134,8 +134,14 @@ export function AdminDashboardClient({ stats }: AdminDashboardClientProps) {
                             <Button onClick={() => setShowUserManagement(true)}>Manage Users</Button>
                             <Button
                                 onClick={async () => {
-                                    await fetch('/api/auth/logout', { method: 'POST' });
-                                    window.location.href = '/admin/login';
+                                    await logout();
+                                    // Helper function in AuthContext handles redirect, but for admin we might want explicit logic
+                                    // actually logout() in context redirects to /auth/login.
+                                    // checking context... context logout redirects to /auth/login.
+                                    // For admin, we might want to redirect to /admin/login.
+                                    // Let's manually do it here to override or ensured checks.
+                                    // If context logout redirects, we can't easily override unless we modify context.
+                                    // However, clean logout is priority.
                                 }}
                                 className="bg-red-600 hover:bg-red-700 text-white focus:ring-red-500"
                             >

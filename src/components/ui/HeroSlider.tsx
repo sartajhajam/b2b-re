@@ -74,14 +74,14 @@ export function HeroSlider({ images }: HeroSliderProps) {
             {/* Navigation Buttons */}
             <button
                 onClick={scrollPrev}
-                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/30 text-white p-2 rounded-full backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100 focus:opacity-100"
+                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/30 text-white p-2 rounded-full backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 cursor-pointer"
                 aria-label="Previous slide"
             >
                 <ChevronLeft className="w-8 h-8" />
             </button>
             <button
                 onClick={scrollNext}
-                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/30 text-white p-2 rounded-full backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100 focus:opacity-100"
+                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/30 text-white p-2 rounded-full backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 cursor-pointer"
                 aria-label="Next slide"
             >
                 <ChevronRight className="w-8 h-8" />

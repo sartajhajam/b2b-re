@@ -36,7 +36,7 @@ export function HeroSlider({ images }: HeroSliderProps) {
             <div className="overflow-hidden" ref={emblaRef}>
                 <div className="flex">
                     {images.map((image, index) => (
-                        <div key={index} className="relative flex-[0_0_100%] min-w-0 h-[500px] sm:h-[600px] lg:h-[700px]">
+                        <div key={index} className="relative flex-[0_0_100%] min-w-0 h-[350px] sm:h-[500px] lg:h-[700px]">
                             <Image
                                 src={image.src}
                                 alt={image.alt}
@@ -54,12 +54,12 @@ export function HeroSlider({ images }: HeroSliderProps) {
                                 <div className="absolute inset-0 flex items-center justify-center text-center">
                                     <div className="max-w-4xl px-6 animate-fade-in-up">
                                         {image.subtitle && (
-                                            <p className="text-lg md:text-xl text-white font-medium mb-4 tracking-widest uppercase shadow-sm">
+                                            <p className="text-sm sm:text-lg md:text-xl text-white font-medium mb-4 tracking-widest uppercase shadow-sm">
                                                 {image.subtitle}
                                             </p>
                                         )}
                                         {image.title && (
-                                            <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-white mb-8 drop-shadow-lg">
+                                            <h2 className="text-3xl sm:text-5xl lg:text-7xl font-serif font-bold text-white mb-8 drop-shadow-lg">
                                                 {image.title}
                                             </h2>
                                         )}

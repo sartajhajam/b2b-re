@@ -69,19 +69,18 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ onImagesChange, maxIma
                 return;
             }
 
-            // Convert files to base64
-            const base64Images = await Promise.all(files.map(file => convertToBase64(file)));
-
             setUploadProgress(30);
 
             // Upload to Cloudinary via API
+            const formData = new FormData();
+            files.forEach(file => {
+                formData.append('images', file);
+            });
+            formData.append('folder', 'products');
+
             const response = await fetch('/api/upload', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    images: base64Images,
-                    folder: 'products'
-                })
+                body: formData
             });
 
             setUploadProgress(70);
@@ -153,8 +152,8 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ onImagesChange, maxIma
             {/* Upload Zone */}
             <div
                 className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${dragActive
-                        ? 'border-blue-500 bg-blue-50'
-                        : 'border-gray-300 hover:border-gray-400'
+                    ? 'border-blue-500 bg-blue-50'
+                    : 'border-gray-300 hover:border-gray-400'
                     }`}
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}

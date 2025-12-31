@@ -3,31 +3,31 @@ import { uploadMultipleImages } from '@/lib/cloudinary';
 
 export async function POST(request: Request) {
     try {
-        const body = await request.json();
-        const { images, folder } = body;
+        const formData = await request.formData();
+        const files = formData.getAll('images') as File[];
+        const folder = formData.get('folder') as string;
 
         // Validate input
-        if (!images || !Array.isArray(images) || images.length === 0) {
+        if (!files || files.length === 0) {
             return NextResponse.json(
                 { error: 'No images provided' },
                 { status: 400 }
             );
         }
 
-        // Validate image format (base64)
-        const validImages = images.every((img: string) =>
-            typeof img === 'string' && (img.startsWith('data:image/') || img.startsWith('http'))
+        // Convert files to base64
+        const base64Images = await Promise.all(
+            files.map(async (file) => {
+                const arrayBuffer = await file.arrayBuffer();
+                const buffer = Buffer.from(arrayBuffer);
+                const base64 = buffer.toString('base64');
+                const mimeType = file.type;
+                return `data:${mimeType};base64,${base64}`;
+            })
         );
 
-        if (!validImages) {
-            return NextResponse.json(
-                { error: 'Invalid image format. Expected base64 or URL' },
-                { status: 400 }
-            );
-        }
-
         // Upload images to Cloudinary
-        const uploadResults = await uploadMultipleImages(images, folder || 'products');
+        const uploadResults = await uploadMultipleImages(base64Images, folder || 'products');
 
         // Return Cloudinary URLs
         return NextResponse.json({

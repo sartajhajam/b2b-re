@@ -37,12 +37,24 @@ export function HeroSlider({ images }: HeroSliderProps) {
                 <div className="flex">
                     {images.map((image, index) => (
                         <div key={index} className="relative flex-[0_0_100%] min-w-0 h-[350px] sm:h-[500px] lg:h-[700px]">
+                            {/* Background Blurred Image - Fills the gaps */}
                             <Image
                                 src={image.src}
                                 alt={image.alt}
                                 fill
                                 priority={index === 0}
-                                className="object-cover"
+                                className="object-cover blur-xl scale-110 opacity-50"
+                                sizes="100vw"
+                                quality={50}
+                            />
+
+                            {/* Main Product Image - Fully Visible */}
+                            <Image
+                                src={image.src}
+                                alt={image.alt}
+                                fill
+                                priority={index === 0}
+                                className="object-contain object-center z-10 relative"
                                 sizes="100vw"
                                 quality={90}
                             />

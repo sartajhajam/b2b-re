@@ -13,18 +13,30 @@ export const dynamic = 'force-dynamic';
 // Define banner images (placeholders - user to replace with Cloudinary URLs)
 const HERO_BANNERS = [
   {
-    src: "https://res.cloudinary.com/ramba-exports/image/upload/v1765975502/ramba-exports/products/p11ukajo9y7qbxgii8gc.jpg",
+    src: "https://res.cloudinary.com/ramba-exports/image/upload/v1767177368/Banner-2_v2002w.png",
     alt: "Mystical Floral Collection ",
   },
   {
-    src: "https://res.cloudinary.com/ramba-exports/image/upload/v1765975487/ramba-exports/products/xg9vcdgzcunjccfx1nqy.jpg",
+    src: "https://res.cloudinary.com/ramba-exports/image/upload/v1767177370/banner-1_dbhwcm.png",
     alt: "Merino Stoles",
   },
   {
-    src: "https://res.cloudinary.com/ramba-exports/image/upload/v1766930240/Gray_Minimalist_New_Collection_Banner_qusrwk.jpg",
+    src: "https://res.cloudinary.com/ramba-exports/image/upload/v1767177369/Banner-5_r66wjd.png",
     alt: "Boiled Wool Stoles Collection",
 
   },
+  {
+    src: "https://res.cloudinary.com/ramba-exports/image/upload/v1767177370/banner-202_egweje.png",
+    alt: "Dresses & Kimonos Collection"
+  },
+  {
+    src: "https://res.cloudinary.com/ramba-exports/image/upload/v1767177369/banner-4_yorb8n.png",
+    alt: "Luxurious Scarves & Capes Collection"
+  },
+  {
+    src: "https://res.cloudinary.com/ramba-exports/image/upload/v1767179567/banner-6_rb2web.png",
+    alt: "Ari Muffler & Woolen Mufflers Collection"
+  }
 
 ];
 

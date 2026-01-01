@@ -5,9 +5,10 @@ import { ProductType } from '@prisma/client';
 /**
  * Generate unique product code in format: {PRODUCT_TYPE}-{COUNTER}
  * Example: SHAWL-001, STOLE-002, etc.
+ * Uses a loop to ensure uniqueness in case of race conditions.
  */
 async function generateProductCode(productType: ProductType): Promise<string> {
-    // Find the last product of the same type
+    // Find the last product of the same type to guess the next counter
     const lastProduct = await prisma.product.findFirst({
         where: { product_type: productType },
         orderBy: { created_at: 'desc' },
@@ -24,8 +25,22 @@ async function generateProductCode(productType: ProductType): Promise<string> {
         }
     }
 
-    // Format: SHAWL-001, SHAWL-002, etc.
-    return `${productType}-${counter.toString().padStart(3, '0')}`;
+    // Try to find a unique code
+    while (true) {
+        const product_code = `${productType}-${counter.toString().padStart(3, '0')}`;
+
+        // Check if this code actually exists
+        const existing = await prisma.product.findUnique({
+            where: { product_code }
+        });
+
+        if (!existing) {
+            return product_code;
+        }
+
+        // Collision detected, increment and try again
+        counter++;
+    }
 }
 
 export async function GET(request: Request) {
@@ -142,6 +157,29 @@ export async function POST(request: Request) {
             );
         }
 
+        // Validate width and length if provided
+        let widthNum: number | null = null;
+        if (width !== undefined && width !== null && width !== '') {
+            widthNum = parseFloat(width);
+            if (isNaN(widthNum) || widthNum <= 0) {
+                return NextResponse.json(
+                    { error: 'Width must be a valid positive number' },
+                    { status: 400 }
+                );
+            }
+        }
+
+        let lengthNum: number | null = null;
+        if (length !== undefined && length !== null && length !== '') {
+            lengthNum = parseFloat(length);
+            if (isNaN(lengthNum) || lengthNum <= 0) {
+                return NextResponse.json(
+                    { error: 'Length must be a valid positive number' },
+                    { status: 400 }
+                );
+            }
+        }
+
         // Auto-generate unique product code
         const product_code = await generateProductCode(product_type as ProductType);
 
@@ -158,8 +196,8 @@ export async function POST(request: Request) {
                 images: Array.isArray(images) ? images : [images],
                 // New fields
                 sub_category,
-                width: width ? parseFloat(width) : null,
-                length: length ? parseFloat(length) : null,
+                width: widthNum,
+                length: lengthNum,
                 wash_care: Array.isArray(wash_care) ? wash_care : []
             } as any
         });

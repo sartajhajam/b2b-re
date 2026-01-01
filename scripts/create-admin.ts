@@ -1,34 +1,34 @@
-
-import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcryptjs';
+import { PrismaClient, Role } from '@prisma/client';
+import { hash } from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
 async function main() {
-    const email = 'admin@rambaexport.com';
+    const email = 'admin@rambaexports.com';
     const password = 'Exporting@#2025';
+    const name = 'Admin User';
+    const company_name = 'Ramba Exports';
+    const country = 'India';
 
-    console.log(`Creating/Updating admin user: ${email}`);
-
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await hash(password, 12);
 
     const user = await prisma.user.upsert({
         where: { email },
         update: {
             password_hash: hashedPassword,
-            role: 'ADMIN',
+            role: Role.ADMIN,
         },
         create: {
             email,
-            name: 'System Admin',
             password_hash: hashedPassword,
-            role: 'ADMIN',
-            company_name: 'Ramba Exports',
-            country: 'India'
-        }
+            name,
+            role: Role.ADMIN,
+            company_name,
+            country,
+        },
     });
 
-    console.log('Admin user created successfully:', user);
+    console.log(`Admin user created/updated: ${user.email}`);
 }
 
 main()
